@@ -1,21 +1,2 @@
--- Set params
-
--- load the pgcrypto extension to gen_random_uuid ()
-CREATE EXTENSION pgcrypto;
-
-CREATE FUNCTION random_text(INTEGER)
-RETURNS TEXT
-LANGUAGE SQL
-AS $$
-  SELECT UPPER(
-    SUBSTRING(
-      (SELECT string_agg(md5(random()::TEXT), '')
-       FROM generate_series(
-           1,
-           CEIL($1 / 32.)::INTEGER)
-       ), 1, $1) );
-$$;
-
--- Filling of users
-INSERT INTO users(id, username, password, email, first_name, last_name, created_at, modified_at, reset_password_token, reset_password_expires, deleted_at, last_connected_at)
-VALUES(DEFAULT, random_text(10), crypt('password', gen_salt('bf')), random_text(10) || '@' || random_text(10) || '.com', random_text(10), random_text(10), statement_timestamp(), statement_timestamp(), random_text(10), statement_timestamp(), 0, 0);
+INSERT INTO concerts VALUES
+(11129128,'Concert','http://www.songkick.com/concerts/11129128-wild-flag-at-fillmore?utm_source=PARTNER_ID&utm_medium=partner','Wild Flag at The Fillmore (April 18, 2012)','20:00:00','2012-04-18','2012-04-18T20:00:00-0800','San Francisco, CA, US',-122.4332937,37.7842398,6239,'The Fillmore','http://www.songkick.com/venues/6239-fillmore?utm_source=PARTNER_ID&utm_medium=partner',-122.4332937,37.7842398,'http://www.songkick.com/metro-areas/26330-us-sf-bay-area?utm_source=PARTNER_ID&utm_medium=partner','SF Bay Area','US',26330,'CA','ok',0.012763);
