@@ -1,2 +1,2 @@
 INSERT INTO concerts VALUES
-(11129128,'Concert','http://www.songkick.com/concerts/11129128-wild-flag-at-fillmore?utm_source=PARTNER_ID&utm_medium=partner','Wild Flag at The Fillmore (April 18, 2012)','20:00:00','2012-04-18','2012-04-18T20:00:00-0800','San Francisco, CA, US',-122.4332937,37.7842398,6239,'The Fillmore','http://www.songkick.com/venues/6239-fillmore?utm_source=PARTNER_ID&utm_medium=partner',-122.4332937,37.7842398,'http://www.songkick.com/metro-areas/26330-us-sf-bay-area?utm_source=PARTNER_ID&utm_medium=partner','SF Bay Area','US',26330,'CA','ok',0.012763);
+(11129128,'Concert','http://www.songkick.com/concerts/11129128-wild-flag-at-fillmore?utm_source=PARTNER_ID&utm_medium=partner','Wild Flag at The Fillmore (April 18, 2012)');
