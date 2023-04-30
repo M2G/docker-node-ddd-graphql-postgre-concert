@@ -27,7 +27,7 @@ services:
 
   redis:
     image: redis:alpine
-    container_name: cache
+    container_name: redis_cache
     ports:
       - ${HOST_PORT_REDIS}:${CONTAINER_PORT_REDIS}
     volumes:
@@ -37,7 +37,7 @@ services:
     image: postgres:15.2-alpine
     restart: always
     environment:
-      - POSTGRES_DB=test_db
+      - POSTGRES_DB=concert_db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - DB_SCHEMA=postgres
@@ -54,7 +54,7 @@ services:
     volumes:
       # chmod +x ./postgres-initdb.sh
       # chmod +x ./sql
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data2:/var/lib/postgresql/data
       - ./postgres-initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
       - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
       # copy the sql script to fill tables
@@ -64,4 +64,4 @@ services:
     cap_add:
       - SYS_NICE
 volumes:
-  postgres-data:
+  postgres-data2:
