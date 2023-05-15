@@ -223,12 +223,15 @@ export default ({ model, jwt }: any) => {
 
       const [total, data] = await Promise.all([
         model.count(),
-        model.findAndCountAll({
-          ...query,
-          attributes,
-          offset: pageSize * (page - 1),
-          limit: pageSize,
-        }, { raw: true }),
+        model.findAndCountAll(
+          {
+            ...query,
+            attributes,
+            offset: pageSize * (page - 1),
+            limit: pageSize,
+          },
+          { raw: true },
+        ),
       ]);
 
       const pages = Math.ceil(total / pageSize);
@@ -253,168 +256,10 @@ export default ({ model, jwt }: any) => {
     }
   };
 
-  const register = async ({
-    created_at,
-    email,
-    password,
-    deleted_at,
-  }: {
-    created_at: number;
-    deleted_at: number;
-    email: string;
-    password: string;
-  }): Promise<IUser> => {
-    try {
-      const { dataValues } = await model.create({
-        created_at,
-        deleted_at,
-        email,
-        password,
-      });
-
-      console.log('::::::::::::::::::::::::::::::::::', dataValues)
-
-      return toEntity({ ...dataValues }) as IUser;
-    } catch (error) {
-      if (error instanceof UniqueConstraintError) {
-        throw new Error('Duplicate error');
-      }
-
-      throw new Error(error as string | undefined);
-    }
-  };
-
-  const forgotPassword = async ({
-    email,
-  }: {
-    email: string;
-  }): Promise<unknown> => {
-    try {
-      const { dataValues } = await model.findOne({ where: { email } }, { raw: true });
-
-      console.log('forgotPassword', dataValues);
-
-      if (!dataValues) return null;
-
-      const payload = {
-        id: dataValues.id,
-        email: dataValues.email,
-        password: dataValues.password,
-      };
-      const options = {
-        subject: dataValues.email,
-        audience: [],
-        expiresIn: 5 * 60,
-        //process.env.JWT_TOKEN_EXPIRE_TIME,
-      };
-      const token: string = jwt.signin(options)(payload);
-
-      return update({
-        id: dataValues.id,
-        //@ts-ignore
-        reset_password_expires: Date.now() + 86400000,
-        reset_password_token: token,
-      });
-    } catch (error) {
-      throw new Error(error as string | undefined);
-    }
-  };
-
-  const resetPassword = async ({
-    password,
-    reset_password_token,
-  }: {
-    password: string;
-    reset_password_token: string;
-  }): Promise<unknown | null> => {
-
-    console.log('resetPassword 1', {
-      password,
-      reset_password_token,
-    });
-
-    try {
-      const dataValues = await model.findOne(
-        {
-          where: {
-            reset_password_token,
-            reset_password_expires: {
-              [Op.gt]: Date.now(),
-            },
-          },
-        },
-        { raw: true },
-      );
-
-      console.log('resetPassword 2', dataValues);
-
-      if (!dataValues) return null;
-
-      dataValues.password = password;
-      dataValues.reset_password_token = null;
-      dataValues.reset_password_expires = Date.now();
-
-      return update({ ...dataValues });
-    } catch (error) {
-      throw new Error(error as string | undefined);
-    }
-  };
-
-  const findOne = async ({ id }: { id: number }): Promise<unknown | null> => {
-    try {
-      const data = await model.findByPk(id, { raw: true });
-      if (!data) return null;
-      return toEntity({ ...data });
-    } catch (error) {
-      throw new Error(error as string | undefined);
-    }
-  };
-
-  const remove = ({ id }: { id: number }): number => {
-    try {
-      return model.destroy({ where: { id } });
-    } catch (error) {
-      throw new Error(error as string | undefined);
-    }
-  };
-
-  const update = ({ id, ...params }: { id: number; params: IUser }) => {
-    console.log('update', { id, ...params });
-    try {
-      return model.update({ ...params }, { where: { id } }, { raw: true });
-    } catch (error) {
-      throw new Error(error as string | undefined);
-    }
-  };
-
-  const authenticate = async ({
-    email,
-  }: {
-    email: string;
-  }): Promise<unknown | null> => {
-    try {
-      const user = await model.findOne({ where: { email } }, { raw: true });
-      return toEntity(user);
-    } catch (error) {
-      throw new Error(error as string | undefined);
-    }
-  };
-
-  const validatePassword = (endcodedPassword: string) => (password: string) =>
-    comparePassword(password, endcodedPassword);
-
   const destroy = (...args: any[]) => model.destroy(...args);
 
   return {
-    remove,
-    update,
-    findOne,
-    authenticate,
-    resetPassword,
-    forgotPassword,
     getAll,
-    register,
-    validatePassword,
     destroy,
   };
 };
