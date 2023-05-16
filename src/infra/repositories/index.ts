@@ -1,4 +1,4 @@
-import Users from './users';
+import Users from './concerts';
 
 export default ({ database, jwt }: any) => {
   const { models } = database;

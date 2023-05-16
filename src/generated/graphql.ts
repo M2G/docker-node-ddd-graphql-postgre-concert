@@ -1,12 +1,11 @@
 /* eslint-disable */
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { Context } from './src/interfaces/schema-definition/types';
 export type Maybe<T> = T | null | undefined;
 export type InputMaybe<T> = T | null | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -14,58 +13,27 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: string;
 };
 
-export type CreateUserInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
+export type Concert = {
+  __typename?: 'Concert';
+  city?: Maybe<Scalars['String']>;
+  concert_id?: Maybe<Scalars['Int']>;
+  datetime?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  lat?: Maybe<Scalars['Int']>;
+  lng?: Maybe<Scalars['Int']>;
+  popularity?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  uri?: Maybe<Scalars['String']>;
 };
 
-export type Mutation = {
-  __typename?: 'Mutation';
-  createUser: User;
-  deleteUser?: Maybe<User>;
-  forgotPassword: Status;
-  resetPassword: Status;
-  signin: Scalars['String'];
-  signup: User;
-  updateUser?: Maybe<User>;
-};
-
-
-export type MutationCreateUserArgs = {
-  input: CreateUserInput;
-};
-
-
-export type MutationDeleteUserArgs = {
-  id: Scalars['String'];
-};
-
-
-export type MutationForgotPasswordArgs = {
-  email: Scalars['String'];
-};
-
-
-export type MutationResetPasswordArgs = {
-  input: ResetPasswordInput;
-};
-
-
-export type MutationSigninArgs = {
-  input?: InputMaybe<SigninInput>;
-};
-
-
-export type MutationSignupArgs = {
-  input?: InputMaybe<SignupInput>;
-};
-
-
-export type MutationUpdateUserArgs = {
-  id: Scalars['String'];
-  input?: InputMaybe<UpdateUserInput>;
+export type Concerts = {
+  __typename?: 'Concerts';
+  pageInfo?: Maybe<PageInfo>;
+  results?: Maybe<Array<Maybe<Concert>>>;
 };
 
 export type PageInfo = {
@@ -78,69 +46,19 @@ export type PageInfo = {
 
 export type Query = {
   __typename?: 'Query';
-  getUser?: Maybe<User>;
-  users?: Maybe<Array<Users>>;
+  concerts: Concerts;
 };
 
 
-export type QueryGetUserArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryUsersArgs = {
+export type QueryConcertsArgs = {
   filters?: InputMaybe<Scalars['String']>;
   page?: InputMaybe<Scalars['Int']>;
   pageSize?: InputMaybe<Scalars['Int']>;
 };
 
-export type ResetPasswordInput = {
-  password: Scalars['String'];
-  token: Scalars['String'];
-};
-
-export type SigninInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-};
-
-export type SignupInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-};
-
 export type Status = {
   __typename?: 'Status';
   success?: Maybe<Scalars['Boolean']>;
-};
-
-export type UpdateUserInput = {
-  email?: InputMaybe<Scalars['String']>;
-  first_name?: InputMaybe<Scalars['String']>;
-  last_name?: InputMaybe<Scalars['String']>;
-  username?: InputMaybe<Scalars['String']>;
-};
-
-export type User = {
-  __typename?: 'User';
-  _id?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['Int']>;
-  deleted_at?: Maybe<Scalars['Int']>;
-  email?: Maybe<Scalars['String']>;
-  first_name?: Maybe<Scalars['String']>;
-  last_connected_at?: Maybe<Scalars['Int']>;
-  last_name?: Maybe<Scalars['String']>;
-  modified_at?: Maybe<Scalars['Int']>;
-  password?: Maybe<Scalars['String']>;
-  reset_password_expires?: Maybe<Scalars['String']>;
-  reset_password_token?: Maybe<Scalars['String']>;
-  username?: Maybe<Scalars['String']>;
-};
-
-export type Users = {
-  __typename?: 'Users';
-  pageInfo?: Maybe<PageInfo>;
-  results?: Maybe<Array<Maybe<User>>>;
 };
 
 export enum SortOrder {
@@ -219,49 +137,53 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  CreateUserInput: CreateUserInput;
+  Concert: ResolverTypeWrapper<Concert>;
+  Concerts: ResolverTypeWrapper<Concerts>;
+  Date: ResolverTypeWrapper<Scalars['Date']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
-  Mutation: ResolverTypeWrapper<{}>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Query: ResolverTypeWrapper<{}>;
-  ResetPasswordInput: ResetPasswordInput;
-  SigninInput: SigninInput;
-  SignupInput: SignupInput;
   Status: ResolverTypeWrapper<Status>;
   String: ResolverTypeWrapper<Scalars['String']>;
-  UpdateUserInput: UpdateUserInput;
-  User: ResolverTypeWrapper<User>;
-  Users: ResolverTypeWrapper<Users>;
   sortOrder: SortOrder;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
-  CreateUserInput: CreateUserInput;
+  Concert: Concert;
+  Concerts: Concerts;
+  Date: Scalars['Date'];
   Int: Scalars['Int'];
-  Mutation: {};
   PageInfo: PageInfo;
   Query: {};
-  ResetPasswordInput: ResetPasswordInput;
-  SigninInput: SigninInput;
-  SignupInput: SignupInput;
   Status: Status;
   String: Scalars['String'];
-  UpdateUserInput: UpdateUserInput;
-  User: User;
-  Users: Users;
 }>;
 
-export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
-  deleteUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'id'>>;
-  forgotPassword?: Resolver<ResolversTypes['Status'], ParentType, ContextType, RequireFields<MutationForgotPasswordArgs, 'email'>>;
-  resetPassword?: Resolver<ResolversTypes['Status'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'input'>>;
-  signin?: Resolver<ResolversTypes['String'], ParentType, ContextType, Partial<MutationSigninArgs>>;
-  signup?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<MutationSignupArgs>>;
-  updateUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'id'>>;
+export type ConcertResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Concert'] = ResolversParentTypes['Concert']> = ResolversObject<{
+  city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  concert_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  datetime?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  displayName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lat?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  lng?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  popularity?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  uri?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
+
+export type ConcertsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Concerts'] = ResolversParentTypes['Concerts']> = ResolversObject<{
+  pageInfo?: Resolver<Maybe<ResolversTypes['PageInfo']>, ParentType, ContextType>;
+  results?: Resolver<Maybe<Array<Maybe<ResolversTypes['Concert']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date';
+}
 
 export type PageInfoResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = ResolversObject<{
   count?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
@@ -272,8 +194,7 @@ export type PageInfoResolvers<ContextType = Context, ParentType extends Resolver
 }>;
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  getUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetUserArgs, 'id'>>;
-  users?: Resolver<Maybe<Array<ResolversTypes['Users']>>, ParentType, ContextType, Partial<QueryUsersArgs>>;
+  concerts?: Resolver<ResolversTypes['Concerts'], ParentType, ContextType, Partial<QueryConcertsArgs>>;
 }>;
 
 export type StatusResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Status'] = ResolversParentTypes['Status']> = ResolversObject<{
@@ -281,34 +202,12 @@ export type StatusResolvers<ContextType = Context, ParentType extends ResolversP
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
-  _id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  created_at?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  deleted_at?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  first_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  last_connected_at?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  last_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  modified_at?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  password?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  reset_password_expires?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  reset_password_token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type UsersResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Users'] = ResolversParentTypes['Users']> = ResolversObject<{
-  pageInfo?: Resolver<Maybe<ResolversTypes['PageInfo']>, ParentType, ContextType>;
-  results?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type Resolvers<ContextType = Context> = ResolversObject<{
-  Mutation?: MutationResolvers<ContextType>;
+  Concert?: ConcertResolvers<ContextType>;
+  Concerts?: ConcertsResolvers<ContextType>;
+  Date?: GraphQLScalarType;
   PageInfo?: PageInfoResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Status?: StatusResolvers<ContextType>;
-  User?: UserResolvers<ContextType>;
-  Users?: UsersResolvers<ContextType>;
 }>;
 

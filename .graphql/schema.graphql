@@ -1,22 +1,26 @@
 schema {
   query: Query
-  mutation: Mutation
 }
 
-input CreateUserInput {
-  email: String!
-  password: String!
+type Concert {
+  city: String
+  concert_id: Int
+  datetime: String
+  displayName: String
+  lat: Int
+  lng: Int
+  popularity: String
+  status: String
+  type: String
+  uri: String
 }
 
-type Mutation {
-  createUser(input: CreateUserInput!): User!
-  deleteUser(id: String!): User
-  forgotPassword(email: String!): Status!
-  resetPassword(input: ResetPasswordInput!): Status!
-  signin(input: SigninInput): String!
-  signup(input: SignupInput): User!
-  updateUser(id: String!, input: UpdateUserInput): User
+type Concerts {
+  pageInfo: PageInfo
+  results: [Concert]
 }
+
+scalar Date
 
 type PageInfo {
   count: Int
@@ -26,54 +30,11 @@ type PageInfo {
 }
 
 type Query {
-  getUser(id: String!): User
-  users(filters: String, page: Int, pageSize: Int): [Users!]
-}
-
-input ResetPasswordInput {
-  password: String!
-  token: String!
-}
-
-input SigninInput {
-  email: String!
-  password: String!
-}
-
-input SignupInput {
-  email: String!
-  password: String!
+  concerts(filters: String, page: Int, pageSize: Int): Concerts!
 }
 
 type Status {
   success: Boolean
-}
-
-input UpdateUserInput {
-  email: String
-  first_name: String
-  last_name: String
-  username: String
-}
-
-type User {
-  _id: String
-  created_at: Int
-  deleted_at: Int
-  email: String
-  first_name: String
-  last_connected_at: Int
-  last_name: String
-  modified_at: Int
-  password: String
-  reset_password_expires: String
-  reset_password_token: String
-  username: String
-}
-
-type Users {
-  pageInfo: PageInfo
-  results: [User]
 }
 
 enum sortOrder {
