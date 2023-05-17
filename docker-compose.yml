@@ -31,7 +31,7 @@ services:
     ports:
       - ${HOST_PORT_REDIS}:${CONTAINER_PORT_REDIS}
     volumes:
-      - ./redis-data:/data
+      - ./redis-data2:/data
 
   postgres:
     image: postgres:15.2-alpine
