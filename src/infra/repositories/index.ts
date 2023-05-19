@@ -1,11 +1,19 @@
-import Users from './concerts';
+import Concerts from './concerts';
 
 export default ({ database, jwt }: any) => {
   const { models } = database;
-  const { users } = models;
-  const usersModel: any = users;
+
+  console.log('models models models models models', models);
+
+  const { concerts, artists } = models;
+  const concertsModel: any = concerts;
+  const artistsModel: any = artists;
 
   return {
-    usersRepository: Users({ jwt, model: usersModel }),
+    concertsRepository: Concerts({
+      jwt,
+      model: concertsModel,
+      model2: artistsModel,
+    }),
   };
 };

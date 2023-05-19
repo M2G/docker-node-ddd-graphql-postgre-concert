@@ -7,7 +7,7 @@ CREATE TABLE concerts (
   concert_id SERIAL PRIMARY KEY,
   type TEXT,
   uri TEXT,
-  displayName TEXT,
+  display_name TEXT,
   status TEXT,
   popularity double precision,
   datetime TEXT,
@@ -18,7 +18,7 @@ CREATE TABLE concerts (
 
 CREATE TABLE artists (
   uri TEXT,
-  displayName TEXT,
+  display_name TEXT,
   concert_id SERIAL,
   artist_id SERIAL PRIMARY KEY,
    CONSTRAINT fk_concert

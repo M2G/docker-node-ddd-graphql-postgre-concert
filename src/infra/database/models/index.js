@@ -1,3 +1,4 @@
 import concerts from './concerts';
+import artists from './artists';
 
-export default concerts;
+export { artists, concerts };

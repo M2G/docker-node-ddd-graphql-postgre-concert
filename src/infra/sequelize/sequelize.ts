@@ -69,8 +69,10 @@ export default ({ config, basePath }: any) => {
       db.models[model.name] = model;
     });
 
-  db.models
-    && Object.keys(db.models)?.forEach((key) => {
+  console.log('db.models db.models', db.models);
+
+  db.models &&
+    Object.keys(db.models)?.forEach((key) => {
       if ('associate' in db.models[key]) {
         db.models[key].associate(db.models);
       }

@@ -1,6 +1,5 @@
-/* eslint-disable */
 import sequelize from 'infra/sequelize';
-//@ts-ignore
+
 export default ({ logger, config }) => {
   const { db = null } = config;
   if (!db) {
