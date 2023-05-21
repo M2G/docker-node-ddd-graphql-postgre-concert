@@ -1,5 +1,5 @@
-const convertNodeToCursor = (node: { id: string }) =>
-  Buffer.from(node.id, 'binary').toString('base64');
+const convertNodeToCursor = (node: { concert_id: number }) =>
+  Buffer.from(node.concert_id.toString(), 'binary').toString('base64');
 
 const convertCursorToNodeId = (cursor: string) =>
   Buffer.from(cursor, 'base64').toString('binary');

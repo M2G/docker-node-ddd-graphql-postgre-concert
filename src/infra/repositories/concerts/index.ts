@@ -2,7 +2,6 @@
 import { UniqueConstraintError, Op } from 'sequelize';
 import IUser from 'core/IUser';
 import toEntity from './transform';
-import { comparePassword } from '../../encryption';
 import { convertNodeToCursor, convertCursorToNodeId } from './helpers';
 
 export default ({ model, model2, jwt }: any) => {
@@ -91,18 +90,19 @@ export default ({ model, model2, jwt }: any) => {
           ...query,
           attributes,
           include: model2,
-          //raw: true,
+          raw: true,
+          nest: true,
         }),
       ]);
-
-      console.log('data data data data  data', data);
+      console.log('data data data data  data', data.rows);
 
       if (afterCursor) {
         /* Extracting nodeId from afterCursor */
         let nodeId = convertCursorToNodeId(afterCursor);
 
-        const nodeIndex = data?.findIndex(
-          (datum: { _id: string }) => datum._id.toString() === nodeId,
+        const nodeIndex = data?.rows?.findIndex(
+          (datum: { concert_id: number }) =>
+            datum.concert_id.toString() === nodeId,
         );
         if (nodeIndex === -1) {
           throw new Error('After does not exist');
@@ -113,9 +113,9 @@ export default ({ model, model2, jwt }: any) => {
         }
       }
 
-      const slicedData = data?.slice(afterIndex, afterIndex + first);
+      const slicedData = data?.rows?.slice(afterIndex, afterIndex + first);
 
-      const edges = slicedData?.map((node: { id: string }) => ({
+      const edges = slicedData?.map((node: { concert_id: number }) => ({
         node,
         cursor: convertNodeToCursor(node),
       }));
