@@ -5,21 +5,27 @@ import toEntity from './transform';
 import { convertNodeToCursor, convertCursorToNodeId } from './helpers';
 
 export default ({ model, model2, jwt }: any) => {
-  const getAll = async (
-    ...args: any[]
-  ): Promise<{
+  const getAll = async ({
+    filters,
+    afterCursor,
+    first,
+    attributes,
+  }: {
+    filters: string;
+    afterCursor: number;
+    first: number;
+    attributes: string[] | undefined;
+  }): Promise<{
     edges: { cursor: string; node: { id: number } }[];
     pageInfo: {
       hasPrevPage: boolean;
       hasNextPage: boolean;
-      endCursor: any;
-      startCursor: any;
+      endCursor: string | null;
+      startCursor: string | null;
     };
     totalCount: number;
   }> => {
     try {
-      const [{ filters, first, afterCursor, attributes }]: any = args;
-
       const query: {
         where: {
           [Op.or]?: [
@@ -145,10 +151,21 @@ export default ({ model, model2, jwt }: any) => {
     }
   };
 
+  const findOne = async ({ id }: { id: number }): Promise<unknown | null> => {
+    try {
+      const data = await model.findByPk(id, { raw: true });
+      if (!data) return null;
+      return toEntity({ ...data });
+    } catch (error) {
+      throw new Error(error as string | undefined);
+    }
+  };
+
   const destroy = (...args: any[]) => model.destroy(...args);
 
   return {
     getAll,
+    findOne,
     destroy,
   };
 };

@@ -12,9 +12,7 @@ export default () => {
   return {
     resolvers: {
       // ...DateTimeResolver,
-      // Mutation: {
-      // ...concertsResolvers.Mutation,
-      //  },
+      // Mutation: {},
       Query: {
         ...concertsResolvers.Query,
       },

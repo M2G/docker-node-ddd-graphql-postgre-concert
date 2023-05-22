@@ -1,3 +1,4 @@
-import IUsersRepository from './IUsersRepository';
+import type IUsersRepository from './IUsersRepository';
+import type IConcertsRepository from './IConcertsRepository';
 
-export default IUsersRepository;
+export type { IConcertsRepository, IUsersRepository };

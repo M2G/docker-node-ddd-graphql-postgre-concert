@@ -1,5 +1,5 @@
-import Users from 'domain/users';
+import Concerts from 'domain/concerts';
 
-const toEntity = Users;
+const toEntity = Concerts;
 
 export default toEntity;
