@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
@@ -14,8 +13,7 @@ export default ({ config, logger, auth, schema, verify }: any) => {
   const app = express();
 
   const httpServer = http.createServer(app);
-  // @ts-ignore
-  const apolloServer: any = new ApolloServer<any>({
+  const apolloServer = new ApolloServer<any>({
     cache: 'bounded',
     csrfPrevention: true,
     introspection: true,
@@ -35,8 +33,8 @@ export default ({ config, logger, auth, schema, verify }: any) => {
     }),
   );
   app.disable('x-powered-by');
-  //app.use(auth.initialize());
-  //app.use(auth.authenticate);
+  app.use(auth.initialize());
+  app.use(auth.authenticate);
 
   return {
     server: apolloServer,
@@ -55,7 +53,7 @@ export default ({ config, logger, auth, schema, verify }: any) => {
               cors<cors.CorsRequest>(),
               json(),
               expressMiddleware(apolloServer, {
-                // context: verify.authorization,
+                context: verify.authorization,
               }),
             );
             logger.info(`🚀 Server ready at http://localhost:8181/graphql`);

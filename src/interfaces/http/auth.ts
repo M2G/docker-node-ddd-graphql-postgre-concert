@@ -11,28 +11,31 @@ import Status from 'http-status';
 export default ({
   repository: { usersRepository },
   response: { Fail },
-  jwt
+  jwt,
 }: any) => {
   // @ts-ignore
   const bearerStrategy = new BearerStrategy(
     'bearer',
     (
       token: string,
-      done: (arg0: any, arg1: { email: string; password: string } | null) => any
+      done: (
+        arg0: any,
+        arg1: { email: string; password: string } | null,
+      ) => any,
     ) => {
       const { id, ...args }: any | number = jwt.decode()(token);
 
-      console.log('bearerStrategy', { args, token });
+      console.log('bearerStrategy', { args, token, usersRepository });
 
       usersRepository
         .findOne({ id })
         .then((user: any) => {
-          console.log('user', user);
+          console.log('user user user', user);
           if (!user) return done(Status[Status.NOT_FOUND], null);
           done(null, { email: user.email, password: user.password });
         })
         .catch((error: null) => done(error, null));
-    }
+    },
   );
 
   passport.use(bearerStrategy);
@@ -42,21 +45,25 @@ export default ({
   return {
     initialize: () => passport.initialize(),
     authenticate: (req: Request, res: Response, next: NextFunction) => {
-      return passport.authenticate('bearer', { session: false }, (err: string, _: any) => {
-        console.log('passport.authenticate', err);
+      return passport.authenticate(
+        'bearer',
+        { session: false },
+        (err: string, _: any) => {
+          console.log('passport.authenticate', err);
 
-        if (err === Status[Status.NOT_FOUND])
-          return res
-            .status(Status.NOT_FOUND)
-            .json(Fail({ message: Status[Status.NOT_FOUND] }));
+          if (err === Status[Status.NOT_FOUND])
+            return res
+              .status(Status.NOT_FOUND)
+              .json(Fail({ message: Status[Status.NOT_FOUND] }));
 
-        if (err)
-          return res
-            .status(Status.UNAUTHORIZED)
-            .json(Fail(Status[Status.UNAUTHORIZED]));
+          if (err)
+            return res
+              .status(Status.UNAUTHORIZED)
+              .json(Fail(Status[Status.UNAUTHORIZED]));
 
-        return next();
-      })(req, res, next);
-    }
+          return next();
+        },
+      )(req, res, next);
+    },
   };
 };

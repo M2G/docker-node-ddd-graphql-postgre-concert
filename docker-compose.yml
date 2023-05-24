@@ -63,5 +63,10 @@ services:
       - seccomp:unconfined
     cap_add:
       - SYS_NICE
+
 volumes:
   postgres-data2:
+
+#networks:
+#  docker-graphql-node-ddd-postgre-auth_common_network:
+#    external: true
