@@ -1,0 +1,103 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+scalar Date
+
+type Artist {
+  artist_id: Int
+  concert_id: Int
+  uri: String
+  datetime: String
+}
+
+type Concert {
+  concert_id: Int
+  type: String
+  uri: String
+  displayName: String
+  status: String
+  popularity: String
+  datetime: String
+  city: String
+  lng: Int
+  lat: Int
+  artists: Artist
+}
+
+ type Edge {
+    node: Concert
+    cursor: String
+ }
+
+  type PageInfo {
+    startCursor: String
+    endCursor: String
+    hasNextPage: Boolean
+    hasPrevPage: Boolean
+  }
+
+  type Concerts {
+    totalCount: Int
+    edges: [Edge]
+    pageInfo: PageInfo
+  }
+
+ type Query {
+   concerts(first: Int!, afterCursor: String, filters: String): Concerts!
+ }
+
+ type Query {
+   concert(id: Int!): Concert
+ }
+
+#type Query {
+#  concerts(filters: String, pageSize: Int, page: Int): Concerts!
+#}
+
+# type Users {
+#   totalCount: Int
+#   edges: [Edge]
+#   pageInfo: PageInfo
+# }
+
+enum sortOrder {
+  ASC
+  DESC
+}
+
+# type Query {
+#   users(first: Int!, afterCursor: String, filters: String): Concerts!
+# }
+
+# type Query {
+#   getUser(id: Int!): User
+# }
+
+# type Mutation {
+#   createUser(input: CreateUserInput!): User!
+# }
+
+# type Mutation {
+#   deleteUser(id: Int!): Status!
+# }
+
+# type Mutation {
+#   updateUser(id: Int!, input: UpdateUserInput): Status!
+# }
+
+type Status {
+  success: Boolean
+}
+
+# input CreateUserInput {
+#   email: String!
+#   password: String!
+# }
+
+# input UpdateUserInput {
+#   email: String
+#   first_name: String
+#   last_name: String
+#   username: String
+# }
