@@ -2,13 +2,21 @@ schema {
   query: Query
 }
 
+type Artist {
+  artist_id: Int
+  concert_id: Int
+  datetime: String
+  uri: String
+}
+
 type Concert {
+  artists: Artist
   city: String
   concert_id: Int
   datetime: String
   displayName: String
-  lat: Int
-  lng: Int
+  lat: Float
+  lng: Float
   popularity: String
   status: String
   type: String
@@ -16,21 +24,28 @@ type Concert {
 }
 
 type Concerts {
+  edges: [Edge]
   pageInfo: PageInfo
-  results: [Concert]
+  totalCount: Int
 }
 
 scalar Date
 
+type Edge {
+  cursor: String
+  node: Concert
+}
+
 type PageInfo {
-  count: Int
-  next: Int
-  pages: Int
-  prev: Int
+  endCursor: String
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  startCursor: String
 }
 
 type Query {
-  concerts(filters: String, page: Int, pageSize: Int): Concerts!
+  concert(id: Int!): Concert
+  concerts(afterCursor: String, filters: String, first: Int!): Concerts!
 }
 
 type Status {
