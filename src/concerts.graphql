@@ -20,8 +20,8 @@ type Concert {
   popularity: String
   datetime: String
   city: String
-  lng: Int
-  lat: Int
+  lng: Float
+  lat: Float
   artists: Artist
 }
 
