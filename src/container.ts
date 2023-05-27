@@ -10,7 +10,6 @@ import redis from './infra/redis/caching';
 import logger from './infra/logging/logger';
 import repository from './infra/repositories';
 import database from './infra/database';
-import database2 from './infra/database2';
 import schema from './interfaces/schema-definition';
 import response from './infra/support/response';
 
@@ -21,7 +20,6 @@ container.register({
   auth: asFunction(auth).singleton(),
   config: asValue(config),
   database: asFunction(database).singleton(),
-  database2: asFunction(database2).singleton(),
   jwt: asFunction(jwt).singleton(),
   logger: asFunction(logger).singleton(),
   redis: asFunction(redis).singleton(),

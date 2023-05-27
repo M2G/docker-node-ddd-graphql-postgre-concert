@@ -21,14 +21,7 @@ export default ({ jwt }: { jwt: any }) => {
 
       console.log('authorization query query query query query', operationName);
 
-      if (
-        query?.includes('resetPassword') ||
-        query?.includes('forgotPassword') ||
-        query?.includes('signin') ||
-        query?.includes('signup') ||
-        query?.includes('IntrospectionQuery')
-      )
-        return null;
+      if (query?.includes('IntrospectionQuery')) return null;
 
       const extractToken = authorization?.startsWith('Bearer ');
 

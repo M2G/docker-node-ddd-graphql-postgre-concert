@@ -42,7 +42,7 @@ export default ({ config, logger, auth, schema, verify }: any) => {
       process.env.NODE_ENV === 'test' &&
       startStandaloneServer(apolloServer, { listen: config.port }),
     app,
-    start: (): Promise<unknown> =>
+    start: async (): Promise<unknown> =>
       new Promise(() => {
         if (process.env.NODE_ENV === 'development') {
           return app.listen(config.port, async () => {
@@ -50,7 +50,7 @@ export default ({ config, logger, auth, schema, verify }: any) => {
             await apolloServer.start();
             app.use(
               '/graphql',
-              cors<cors.CorsRequest>(),
+              cors(),
               json(),
               expressMiddleware(apolloServer, {
                 context: verify.authorization,

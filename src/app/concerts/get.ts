@@ -1,6 +1,6 @@
 import type IUsersRepository from 'types/IUsersRepository';
 
-const KEY = 'LIST_USER';
+const KEY = 'LIST_CONCERT';
 const TTL = 1 * 60;
 
 /**
@@ -26,25 +26,23 @@ export default ({
     page: number;
   }) => {
     try {
-      /*
       if (arg && Object.values(arg).filter(Boolean).length) {
-        return usersRepository.getAll({
+        return concertsRepository.getAll({
           attributes: {},
           ...arg,
         });
       }
-       */
 
-      // const cachingUserList = await redis.get(KEY);
+      const cachingConcertList = await redis.get(KEY);
 
-      //  if (cachingUserList) return cachingUserList;
+      if (cachingConcertList) return cachingConcertList;
 
       const userList = concertsRepository.getAll({
         attributes: {},
         ...arg,
       });
 
-      // redis.set(KEY, JSON.stringify(userList), TTL);
+      redis.set(KEY, JSON.stringify(userList), TTL);
 
       return userList;
     } catch (error) {

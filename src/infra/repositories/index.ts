@@ -1,11 +1,9 @@
 import Concerts from './concerts';
 import Users from './users';
 
-export default ({ database, database2 }: any) => {
+export default ({ database }: any) => {
   const { models } = database;
-  const { models: models2 } = database2;
-  const { concerts, artists } = models;
-  const { users } = models2;
+  const { concerts, artists, users } = models;
 
   return {
     concertsRepository: Concerts({

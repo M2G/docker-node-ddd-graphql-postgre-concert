@@ -6,6 +6,7 @@ export type InputMaybe<T> = T | null | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -16,14 +17,23 @@ export type Scalars = {
   Date: string;
 };
 
+export type Artist = {
+  __typename?: 'Artist';
+  artist_id?: Maybe<Scalars['Int']>;
+  concert_id?: Maybe<Scalars['Int']>;
+  datetime?: Maybe<Scalars['String']>;
+  uri?: Maybe<Scalars['String']>;
+};
+
 export type Concert = {
   __typename?: 'Concert';
+  artists?: Maybe<Artist>;
   city?: Maybe<Scalars['String']>;
   concert_id?: Maybe<Scalars['Int']>;
   datetime?: Maybe<Scalars['String']>;
   displayName?: Maybe<Scalars['String']>;
-  lat?: Maybe<Scalars['Int']>;
-  lng?: Maybe<Scalars['Int']>;
+  lat?: Maybe<Scalars['Float']>;
+  lng?: Maybe<Scalars['Float']>;
   popularity?: Maybe<Scalars['String']>;
   status?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
@@ -32,28 +42,41 @@ export type Concert = {
 
 export type Concerts = {
   __typename?: 'Concerts';
+  edges?: Maybe<Array<Maybe<Edge>>>;
   pageInfo?: Maybe<PageInfo>;
-  results?: Maybe<Array<Maybe<Concert>>>;
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type Edge = {
+  __typename?: 'Edge';
+  cursor?: Maybe<Scalars['String']>;
+  node?: Maybe<Concert>;
 };
 
 export type PageInfo = {
   __typename?: 'PageInfo';
-  count?: Maybe<Scalars['Int']>;
-  next?: Maybe<Scalars['Int']>;
-  pages?: Maybe<Scalars['Int']>;
-  prev?: Maybe<Scalars['Int']>;
+  endCursor?: Maybe<Scalars['String']>;
+  hasNextPage?: Maybe<Scalars['Boolean']>;
+  hasPrevPage?: Maybe<Scalars['Boolean']>;
+  startCursor?: Maybe<Scalars['String']>;
 };
 
 export type Query = {
   __typename?: 'Query';
+  concert?: Maybe<Concert>;
   concerts: Concerts;
 };
 
 
+export type QueryConcertArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type QueryConcertsArgs = {
+  afterCursor?: InputMaybe<Scalars['String']>;
   filters?: InputMaybe<Scalars['String']>;
-  page?: InputMaybe<Scalars['Int']>;
-  pageSize?: InputMaybe<Scalars['Int']>;
+  first: Scalars['Int'];
 };
 
 export type Status = {
@@ -136,10 +159,13 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  Artist: ResolverTypeWrapper<Artist>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Concert: ResolverTypeWrapper<Concert>;
   Concerts: ResolverTypeWrapper<Concerts>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
+  Edge: ResolverTypeWrapper<Edge>;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Query: ResolverTypeWrapper<{}>;
@@ -150,10 +176,13 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  Artist: Artist;
   Boolean: Scalars['Boolean'];
   Concert: Concert;
   Concerts: Concerts;
   Date: Scalars['Date'];
+  Edge: Edge;
+  Float: Scalars['Float'];
   Int: Scalars['Int'];
   PageInfo: PageInfo;
   Query: {};
@@ -161,13 +190,22 @@ export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String'];
 }>;
 
+export type ArtistResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Artist'] = ResolversParentTypes['Artist']> = ResolversObject<{
+  artist_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  concert_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  datetime?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  uri?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type ConcertResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Concert'] = ResolversParentTypes['Concert']> = ResolversObject<{
+  artists?: Resolver<Maybe<ResolversTypes['Artist']>, ParentType, ContextType>;
   city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   concert_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   datetime?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   displayName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  lat?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  lng?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  lat?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  lng?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   popularity?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -176,8 +214,9 @@ export type ConcertResolvers<ContextType = Context, ParentType extends Resolvers
 }>;
 
 export type ConcertsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Concerts'] = ResolversParentTypes['Concerts']> = ResolversObject<{
+  edges?: Resolver<Maybe<Array<Maybe<ResolversTypes['Edge']>>>, ParentType, ContextType>;
   pageInfo?: Resolver<Maybe<ResolversTypes['PageInfo']>, ParentType, ContextType>;
-  results?: Resolver<Maybe<Array<Maybe<ResolversTypes['Concert']>>>, ParentType, ContextType>;
+  totalCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -185,16 +224,23 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'Date';
 }
 
+export type EdgeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Edge'] = ResolversParentTypes['Edge']> = ResolversObject<{
+  cursor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  node?: Resolver<Maybe<ResolversTypes['Concert']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type PageInfoResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = ResolversObject<{
-  count?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  next?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  pages?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  prev?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  endCursor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  hasNextPage?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  hasPrevPage?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  startCursor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  concerts?: Resolver<ResolversTypes['Concerts'], ParentType, ContextType, Partial<QueryConcertsArgs>>;
+  concert?: Resolver<Maybe<ResolversTypes['Concert']>, ParentType, ContextType, RequireFields<QueryConcertArgs, 'id'>>;
+  concerts?: Resolver<ResolversTypes['Concerts'], ParentType, ContextType, RequireFields<QueryConcertsArgs, 'first'>>;
 }>;
 
 export type StatusResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Status'] = ResolversParentTypes['Status']> = ResolversObject<{
@@ -203,9 +249,11 @@ export type StatusResolvers<ContextType = Context, ParentType extends ResolversP
 }>;
 
 export type Resolvers<ContextType = Context> = ResolversObject<{
+  Artist?: ArtistResolvers<ContextType>;
   Concert?: ConcertResolvers<ContextType>;
   Concerts?: ConcertsResolvers<ContextType>;
   Date?: GraphQLScalarType;
+  Edge?: EdgeResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Status?: StatusResolvers<ContextType>;
