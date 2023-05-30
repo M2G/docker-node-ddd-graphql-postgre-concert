@@ -12,7 +12,7 @@ export default ({ model, model2, jwt }: any) => {
     attributes,
   }: {
     filters: string;
-    afterCursor: number;
+    afterCursor: string;
     first: number;
     attributes: string[] | undefined;
   }): Promise<{
@@ -25,6 +25,10 @@ export default ({ model, model2, jwt }: any) => {
     };
     totalCount: number;
   }> => {
+    const nodeId = convertCursorToNodeId(afterCursor || 'MTExMjkxMjk=');
+
+    console.log('nodeId nodeId nodeId', nodeId);
+
     try {
       const query: {
         where: {
@@ -48,6 +52,9 @@ export default ({ model, model2, jwt }: any) => {
           datetime: {
             [Op.and]: [{ [Op.gte]: Date }];
           };
+          concert_id?: {
+            [Op.and]: [{ [Op.gte]: string }];
+          };
         };
         order: string[][];
       } = {
@@ -55,15 +62,23 @@ export default ({ model, model2, jwt }: any) => {
           datetime: {
             [Op.and]: [{ [Op.gte]: new Date() }],
           },
+          concert_id: {
+            [Op.and]: [{ [Op.gte]: nodeId }],
+          },
         },
         order: [['datetime', 'ASC']],
       };
+
+      console.log('afterCursor afterCursor afterCursor', afterCursor);
 
       if (filters) {
         query.order = [['datetime', 'ASC']];
         query.where = {
           datetime: {
             [Op.and]: [{ [Op.gte]: new Date() }],
+          },
+          concert_id: {
+            [Op.and]: [{ [Op.gte]: nodeId }],
           },
           [Op.or]: [
             {
@@ -90,22 +105,18 @@ export default ({ model, model2, jwt }: any) => {
       }
       let afterIndex = 0;
 
-      const [total, data] = await Promise.all([
-        model.count(),
-        model.findAndCountAll({
-          ...query,
-          attributes,
-          include: model2,
-          raw: true,
-          nest: true,
-        }),
-      ]);
-      console.log('data data data data  data', data.rows);
+      console.log('query query query query', query);
+
+      const data = await model.findAndCountAll({
+        ...query,
+        attributes,
+        include: model2,
+        raw: true,
+        nest: true,
+      });
+      console.log('data data data data  data', data);
 
       if (afterCursor) {
-        /* Extracting nodeId from afterCursor */
-        let nodeId = convertCursorToNodeId(afterCursor);
-
         const nodeIndex = data?.rows?.findIndex(
           (datum: { concert_id: number }) =>
             datum.concert_id.toString() === nodeId,
@@ -133,11 +144,11 @@ export default ({ model, model2, jwt }: any) => {
         endCursor = convertNodeToCursor(edges[edges.length - 1].node);
       }
 
-      const hasNextPage = total > afterIndex + first;
+      const hasNextPage = data.count > afterIndex + first;
       const hasPrevPage = !!afterIndex;
 
       return {
-        totalCount: total,
+        totalCount: data.count,
         edges,
         pageInfo: {
           startCursor,
@@ -147,6 +158,7 @@ export default ({ model, model2, jwt }: any) => {
         },
       };
     } catch (error) {
+      console.log('error error error error', error);
       throw new Error(error as string | undefined);
     }
   };
