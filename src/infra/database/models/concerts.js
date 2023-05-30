@@ -5,6 +5,10 @@ module.exports = function (sequelize, DataTypes) {
   const Concerts = sequelize.define(
     tableConcert,
     {
+      artist_id: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
       city: {
         allowNull: true,
         type: DataTypes.STRING,
@@ -60,10 +64,6 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      concert_id: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-      },
       display_name: {
         allowNull: false,
         type: DataTypes.STRING,
@@ -78,7 +78,7 @@ module.exports = function (sequelize, DataTypes) {
     },
   );
 
-  Concerts.hasMany(Artists, { foreignKey: 'concert_id' });
+  Concerts.hasMany(Artists, { foreignKey: 'artist_id' });
   Artists.belongsTo(Concerts);
 
   return Concerts;

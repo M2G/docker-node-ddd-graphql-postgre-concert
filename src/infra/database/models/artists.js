@@ -30,10 +30,6 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      concert_id: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-      },
       display_name: {
         allowNull: false,
         type: DataTypes.STRING,
