@@ -31,7 +31,7 @@ export type Concert = {
   city?: Maybe<Scalars['String']>;
   concert_id?: Maybe<Scalars['Int']>;
   datetime?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
+  display_name?: Maybe<Scalars['String']>;
   lat?: Maybe<Scalars['Float']>;
   lng?: Maybe<Scalars['Float']>;
   popularity?: Maybe<Scalars['String']>;
@@ -203,7 +203,7 @@ export type ConcertResolvers<ContextType = Context, ParentType extends Resolvers
   city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   concert_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   datetime?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  displayName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  display_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   lat?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   lng?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   popularity?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;

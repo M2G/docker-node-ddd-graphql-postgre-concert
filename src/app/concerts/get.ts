@@ -24,7 +24,7 @@ export default ({
     filters: string;
     pageSize: number;
     page: number;
-  }) => {
+  }): Promise<any> => {
     try {
       if (arg && Object.values(arg).filter(Boolean).length) {
         return concertsRepository.getAll({

@@ -20,6 +20,7 @@ export default ({ getUseCase, getOneUseCase }: any) => {
       },
       concerts: (_: any, { ...args }: { p: [string: any] }) => {
         try {
+          console.log('args', args);
           return getUseCase.all({ ...args });
         } catch (error) {
           throw new Error(error as string | undefined);
