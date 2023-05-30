@@ -78,7 +78,11 @@ module.exports = function (sequelize, DataTypes) {
     },
   );
 
-  Concerts.hasMany(Artists, { foreignKey: 'artist_id' });
+  Concerts.hasOne(Artists, {
+    foreignKey: 'artist_id',
+    sourceKey: 'artist_id',
+  });
+
   Artists.belongsTo(Concerts);
 
   return Concerts;

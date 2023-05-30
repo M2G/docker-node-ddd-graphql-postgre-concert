@@ -6,13 +6,13 @@ scalar Date
 
 type Artist {
   artist_id: Int
-  concert_id: Int
   uri: String
   datetime: String
 }
 
 type Concert {
   concert_id: Int
+  artist_id: Int
   type: String
   uri: String
   display_name: String
@@ -22,7 +22,7 @@ type Concert {
   city: String
   lng: Float
   lat: Float
-  artists: Artist
+  artist: Artist
 }
 
  type Edge {
