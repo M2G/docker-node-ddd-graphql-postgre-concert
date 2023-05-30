@@ -7,7 +7,7 @@ scalar Date
 type Artist {
   artist_id: Int
   uri: String
-  datetime: String
+  display_name: String
 }
 
 type Concert {

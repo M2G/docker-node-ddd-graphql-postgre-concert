@@ -108,14 +108,18 @@ export default ({ model, model2, jwt }: any) => {
       console.log('query query query query', query);
       console.log('model2 model2 model2 model2', model2);
       const data = await model.findAndCountAll({
-        //...query,
-        ...{},
+        ...query,
         attributes,
         include: model2,
         raw: true,
         nest: true,
       });
       console.log('data data data data  data', data);
+
+      console.log(
+        'artist artist artist artist  artist',
+        data?.rows?.[0]?.artist,
+      );
 
       if (afterCursor) {
         const nodeIndex = data?.rows?.findIndex(
