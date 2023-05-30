@@ -15,7 +15,7 @@ type Concert {
   concert_id: Int
   type: String
   uri: String
-  displayName: String
+  display_name: String
   status: String
   popularity: String
   datetime: String
