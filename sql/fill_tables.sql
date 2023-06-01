@@ -10,6 +10,12 @@ INSERT INTO artists VALUES
 INSERT INTO artists VALUES
 ('https://www.songkick.com/artists/317826-plk','PLK', 4);
 
+INSERT INTO artists VALUES
+('https://www.songkick.com/artists/7368884-luidji','Luidji', 5);
+
+INSERT INTO artists VALUES
+('https://www.songkick.com/artists/172340-sch','Sch', 6);
+
 INSERT INTO concerts VALUES
 (40649202, 1, 'Concert','https://www.songkick.com/concerts/40649202-josman-at-accor-arena','Josman at Accor Arena (February 24, 2024)','ok',0.012763,'2024-02-24T20:00:00-0800','Paris, France',48.8385379,2.3785842);
 
@@ -24,3 +30,9 @@ INSERT INTO concerts VALUES
 
 INSERT INTO concerts VALUES
 (41134189, 4, 'Concert','https://www.songkick.com/concerts/41134189-plk-at-accor-arena','PLK at Accor Arena (March 17, 2024)','ok',0.052765,'2024-03-17T20:00:00-0800','Paris, France',48.8385379,2.3785842);
+
+INSERT INTO concerts VALUES
+(41114429, 5, 'Concert','https://www.songkick.com/concerts/41114429-luidji-at-le-plan-grande-salle','Luidji at Le Plan Grande Salle (October 07, 2023)','ok',0.052765,'2023-10-17T20:00:00-0800','Paris, France',48.6373777,2.4035511);
+
+INSERT INTO concerts VALUES
+(41108804, 6, 'Concert','https://www.songkick.com/concerts/41167947-sch-at-accor-arena','Sch at Accor Arena (December 10, 2024)','ok',0.052765,'2024-12-10T20:00:00-0800','Paris, France',48.8385379,2.3785842);

@@ -108,7 +108,8 @@ export default ({ model, model2, jwt }: any) => {
       console.log('query query query query', query);
       console.log('model2 model2 model2 model2', model2);
       const data = await model.findAndCountAll({
-        ...query,
+        //...query,
+        ...{},
         attributes,
         include: model2,
         raw: true,
