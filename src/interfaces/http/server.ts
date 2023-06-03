@@ -33,8 +33,8 @@ export default ({ config, logger, auth, schema, verify }: any) => {
     }),
   );
   app.disable('x-powered-by');
-  //app.use(auth.initialize());
-  //app.use(auth.authenticate);
+  app.use(auth.initialize());
+  app.use(auth.authenticate);
 
   return {
     server: apolloServer,
@@ -53,7 +53,7 @@ export default ({ config, logger, auth, schema, verify }: any) => {
               cors(),
               json(),
               expressMiddleware(apolloServer, {
-                // context: verify.authorization,
+                context: verify.authorization,
               }),
             );
             logger.info(`🚀 Server ready at http://localhost:8181/graphql`);

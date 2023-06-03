@@ -35,6 +35,8 @@ export default ({
 
       const cachingConcertList = await redis.get(KEY);
 
+      console.log('cachingConcertList', cachingConcertList);
+
       if (cachingConcertList) return cachingConcertList;
 
       const userList = concertsRepository.getAll({
