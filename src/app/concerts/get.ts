@@ -19,12 +19,26 @@ export default ({
   logger: any;
 }) => {
   const all = async ({
-    ...arg
+    filters,
+    page,
+    pageSize,
   }: {
     filters: string;
-    pageSize: number;
     page: number;
+    pageSize: number;
   }): Promise<any> => {
+    console.log('arg arg arg arg', {
+      filters,
+      pageSize,
+      page,
+    });
+
+    const arg = {
+      filters,
+      page,
+      pageSize,
+    };
+
     try {
       if (arg && Object.values(arg).filter(Boolean).length) {
         return concertsRepository.getAll({

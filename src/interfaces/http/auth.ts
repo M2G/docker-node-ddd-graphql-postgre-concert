@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import BearerStrategy from 'passport-http-bearer';
