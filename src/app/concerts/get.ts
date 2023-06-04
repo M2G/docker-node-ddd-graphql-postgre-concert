@@ -39,14 +39,14 @@ export default ({
 
       if (cachingConcertList) return cachingConcertList;
 
-      const userList = concertsRepository.getAll({
+      const concertList = concertsRepository.getAll({
         attributes: {},
         ...arg,
       });
 
-      redis.set(KEY, JSON.stringify(userList), TTL);
+      redis.set(KEY, JSON.stringify(concertList), TTL);
 
-      return userList;
+      return concertList;
     } catch (error) {
       throw new Error(error as string | undefined);
     }
