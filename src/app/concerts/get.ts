@@ -1,7 +1,7 @@
 import type IUsersRepository from 'types/IUsersRepository';
 
 const KEY = 'LIST_CONCERT';
-const TTL = 5 * 60;
+const TTL = 1 * 60;
 
 /**
  * function for get users.
@@ -45,15 +45,13 @@ export default ({
         return cachingConcertList;
 
       const concertList = await concertsRepository.getAll({
+        afterCursor,
         attributes: {},
-        ...{
-          afterCursor,
-          filters,
-          first,
-        },
+        filters,
+        first,
       });
 
-      console.log('concertList', concertList);
+      console.log('concertList', await concertList);
 
       redis.set(KEY, JSON.stringify(concertList), TTL);
 
