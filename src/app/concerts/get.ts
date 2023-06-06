@@ -1,7 +1,7 @@
 import type IUsersRepository from 'types/IUsersRepository';
 
 const KEY = 'LIST_CONCERT';
-const TTL = 1 * 60;
+const TTL = 5 * 60;
 
 /**
  * function for get users.
@@ -19,44 +19,41 @@ export default ({
   logger: any;
 }) => {
   const all = async ({
+    afterCursor,
     filters,
-    page,
-    pageSize,
+    first,
   }: {
+    afterCursor: string | null;
     filters: string;
-    page: number;
-    pageSize: number;
+    first: number;
   }): Promise<any> => {
     console.log('arg arg arg arg', {
+      afterCursor,
       filters,
-      pageSize,
-      page,
+      first,
     });
 
-    const arg = {
-      filters,
-      page,
-      pageSize,
-    };
-
     try {
-      if (arg && Object.values(arg).filter(Boolean).length) {
-        return concertsRepository.getAll({
-          attributes: {},
-          ...arg,
-        });
-      }
-
       const cachingConcertList = await redis.get(KEY);
 
       console.log('cachingConcertList', cachingConcertList);
 
-      if (cachingConcertList) return cachingConcertList;
+      if (
+        cachingConcertList &&
+        Object.values(cachingConcertList).filter(Boolean).length
+      )
+        return cachingConcertList;
 
-      const concertList = concertsRepository.getAll({
+      const concertList = await concertsRepository.getAll({
         attributes: {},
-        ...arg,
+        ...{
+          afterCursor,
+          filters,
+          first,
+        },
       });
+
+      console.log('concertList', concertList);
 
       redis.set(KEY, JSON.stringify(concertList), TTL);
 

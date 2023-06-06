@@ -114,12 +114,6 @@ export default ({ model, model2, jwt }: any) => {
         raw: true,
         nest: true,
       });
-      console.log('data data data data  data', data);
-
-      console.log(
-        'artist artist artist artist  artist',
-        data?.rows?.[0]?.artist,
-      );
 
       if (afterCursor) {
         const nodeIndex = data?.rows?.findIndex(
