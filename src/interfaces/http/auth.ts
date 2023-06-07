@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import BearerStrategy from 'passport-http-bearer';
 import Status from 'http-status';
@@ -12,7 +12,6 @@ export default ({
   response: { Fail },
   jwt,
 }: any) => {
-  // @ts-ignore
   const bearerStrategy = new BearerStrategy(
     'bearer',
     (

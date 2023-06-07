@@ -34,6 +34,15 @@ export default ({
     });
 
     try {
+      if (!afterCursor || !filters) {
+        return concertsRepository.getAll({
+          afterCursor,
+          attributes: {},
+          filters,
+          first,
+        });
+      }
+
       const cachingConcertList = await redis.get(KEY);
 
       console.log('cachingConcertList', cachingConcertList);
