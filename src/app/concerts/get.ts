@@ -34,24 +34,16 @@ export default ({
     });
 
     try {
-      if (!afterCursor || !filters) {
-        return concertsRepository.getAll({
-          afterCursor,
-          attributes: {},
-          filters,
-          first,
-        });
+      if (!afterCursor && !filters) {
+        const cachingConcertList = await redis.get(KEY);
+        logger.info(cachingConcertList);
+        if (
+          cachingConcertList &&
+          Object.values(cachingConcertList).filter(Boolean).length
+        ) {
+          return cachingConcertList;
+        }
       }
-
-      const cachingConcertList = await redis.get(KEY);
-
-      console.log('cachingConcertList', cachingConcertList);
-
-      if (
-        cachingConcertList &&
-        Object.values(cachingConcertList).filter(Boolean).length
-      )
-        return cachingConcertList;
 
       const concertList = await concertsRepository.getAll({
         afterCursor,
@@ -59,8 +51,6 @@ export default ({
         filters,
         first,
       });
-
-      console.log('concertList', await concertList);
 
       redis.set(KEY, JSON.stringify(concertList), TTL);
 

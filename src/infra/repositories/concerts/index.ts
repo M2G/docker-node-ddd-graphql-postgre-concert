@@ -34,17 +34,12 @@ export default ({ model, model2, jwt }: any) => {
         where: {
           [Op.or]?: [
             {
-              email: {
+              display_name: {
                 [Op.like]: string;
               };
             },
             {
-              first_name: {
-                [Op.like]: string;
-              };
-            },
-            {
-              last_name: {
+              datetime: {
                 [Op.like]: string;
               };
             },
@@ -82,17 +77,12 @@ export default ({ model, model2, jwt }: any) => {
           },
           [Op.or]: [
             {
-              email: {
+              display_name: {
                 [Op.like]: `%${filters}%`,
               },
             },
             {
-              first_name: {
-                [Op.like]: `%${filters}%`,
-              },
-            },
-            {
-              last_name: {
+              datetime: {
                 [Op.like]: `%${filters}%`,
               },
             },
