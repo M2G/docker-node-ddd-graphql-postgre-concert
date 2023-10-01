@@ -20,7 +20,7 @@ export default ({ jwt }: { jwt: any }) => {
       } = req;
 
       console.log('authorization query query query query query', operationName);
-
+      //@TODO find a another way to do this
       if (query?.includes('IntrospectionQuery')) return null;
 
       const extractToken = authorization?.startsWith('Bearer ');
