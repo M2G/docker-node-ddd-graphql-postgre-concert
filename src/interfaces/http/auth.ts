@@ -23,7 +23,7 @@ export default ({
     ) => {
       const { id, ...args }: any | number = jwt.decode()(token);
 
-      console.log('bearerStrategy', { args, token, usersRepository });
+      console.log('bearerStrategy', { id, args, token, usersRepository });
 
       usersRepository
         .findOne({ id })

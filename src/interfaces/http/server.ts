@@ -56,7 +56,7 @@ export default ({ config, logger, auth, schema, verify }: any) => {
                 context: verify.authorization,
               }),
             );
-            logger.info(`🚀 Server ready at http://localhost:8181/graphql`);
+            logger.info(`🚀 Server ready at http://localhost:8282/graphql`);
           });
         }
       }),

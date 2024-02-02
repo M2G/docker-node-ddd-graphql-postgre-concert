@@ -25,6 +25,8 @@ export default ({ model, model2, jwt }: any) => {
     };
     totalCount: number;
   }> => {
+    console.log('filters filters filters', filters);
+
     const nodeId = convertCursorToNodeId(afterCursor || 'MTExMjkxMjk=');
 
     console.log('nodeId nodeId nodeId', nodeId);
@@ -35,11 +37,6 @@ export default ({ model, model2, jwt }: any) => {
           [Op.or]?: [
             {
               display_name: {
-                [Op.like]: string;
-              };
-            },
-            {
-              datetime: {
                 [Op.like]: string;
               };
             },
@@ -81,11 +78,6 @@ export default ({ model, model2, jwt }: any) => {
                 [Op.like]: `%${filters}%`,
               },
             },
-            {
-              datetime: {
-                [Op.like]: `%${filters}%`,
-              },
-            },
           ],
         };
       }
@@ -104,6 +96,8 @@ export default ({ model, model2, jwt }: any) => {
         raw: true,
         nest: true,
       });
+
+      console.log('data data data data', data);
 
       if (afterCursor) {
         const nodeIndex = data?.rows?.findIndex(

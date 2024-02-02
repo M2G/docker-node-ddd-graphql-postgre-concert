@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import redis from 'redis';
 import validatedTtl from './validatedTtl';
 

@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import { Router } from 'express';
 import Status from 'http-status';
 

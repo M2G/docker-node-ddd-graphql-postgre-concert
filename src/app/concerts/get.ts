@@ -52,7 +52,9 @@ export default ({
         first,
       });
 
-      redis.set(KEY, JSON.stringify(concertList), TTL);
+      !afterCursor &&
+        !filters &&
+        redis.set(KEY, JSON.stringify(concertList), TTL);
 
       return concertList;
     } catch (error) {
