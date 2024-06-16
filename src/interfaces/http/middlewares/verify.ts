@@ -16,14 +16,7 @@ const time =
 const TOKEN_EXPIRED_ERROR = 'TokenExpiredError';
 // const FAIL_AUTH = 'Failed to authenticate token is expired.';
 
-const WHITE_LIST = [
-  'resetPassword',
-  'forgotPassword',
-  'signin',
-  'signup',
-  'IntrospectionQuery',
-  '__schema',
-];
+const WHITE_LIST = ['IntrospectionQuery', '__schema'];
 
 export default ({ jwt }: { jwt: any }) => {
   return {

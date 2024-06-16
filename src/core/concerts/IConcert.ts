@@ -1,17 +1,17 @@
+import type IArtist from 'core/artists';
+
 interface IConcert {
-  id: number;
-  email?: string;
-  username?: string;
-  first_name?: string;
-  last_name?: string;
-  password: string;
-  created_at?: number;
-  modified_at?: number;
-  reset_password_token?: string;
-  reset_password_expires?: number;
-  token?: string;
-  deleted_at?: number;
-  last_connected_at: number;
+  concert_id: number;
+  type: string;
+  uri: string;
+  display_name: string;
+  status: string;
+  popularity: string;
+  datetime: string;
+  city: string;
+  lng: number;
+  lat: number;
+  artist: IArtist;
 }
 
 export default IConcert;

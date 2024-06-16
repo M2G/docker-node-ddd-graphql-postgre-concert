@@ -5,7 +5,7 @@ import toEntity from './transform';
 import { convertNodeToCursor, convertCursorToNodeId } from './helpers';
 
 export default ({ model, model2, jwt }: any) => {
-  const getAll = async ({
+  async function getAll({
     filters,
     afterCursor,
     first,
@@ -24,7 +24,7 @@ export default ({ model, model2, jwt }: any) => {
       startCursor: string | null;
     };
     totalCount: number;
-  }> => {
+  }> {
     console.log('filters filters filters', filters);
 
     const nodeId = convertCursorToNodeId(afterCursor || 'MTExMjkxMjk=');
@@ -144,7 +144,7 @@ export default ({ model, model2, jwt }: any) => {
       console.log('error error error error', error);
       throw new Error(error as string | undefined);
     }
-  };
+  }
 
   const findOne = async ({ id }: { id: number }): Promise<unknown | null> => {
     try {

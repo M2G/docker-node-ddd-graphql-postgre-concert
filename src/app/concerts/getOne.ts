@@ -10,15 +10,15 @@ export default ({
 }: {
   concertsRepository: IConcertsRepository;
   logger: any;
-}) => {
-  const getOne = ({ id }: { readonly id: number }) => {
+}): { getOne: ({ id }: { readonly id: number }) => any } => {
+  function getOne({ id }: { readonly id: number }) {
     try {
       const concert = Concerts({ id });
       return concertsRepository.findOne(concert);
     } catch (error: unknown) {
       throw new Error(error as string | undefined);
     }
-  };
+  }
 
   return {
     getOne,

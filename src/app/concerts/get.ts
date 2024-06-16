@@ -18,7 +18,7 @@ export default ({
   concertsRepository: any;
   logger: any;
 }) => {
-  const all = async ({
+  async function all({
     afterCursor,
     filters,
     first,
@@ -26,7 +26,7 @@ export default ({
     afterCursor: string | null;
     filters: string;
     first: number;
-  }): Promise<any> => {
+  }): Promise<any> {
     console.log('arg arg arg arg', {
       afterCursor,
       filters,
@@ -60,7 +60,7 @@ export default ({
     } catch (error) {
       throw new Error(error as string | undefined);
     }
-  };
+  }
 
   return {
     all,
